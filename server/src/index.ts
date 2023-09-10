@@ -4,14 +4,11 @@ config();
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import { getDecksController } from "./controllers/getDecksController";
-import { createDeckController } from "./controllers/createDeckController";
-import { deleteDeckController } from "./controllers/deleteDeckController";
-import { getDeckController } from "./controllers/getDeckController";
-import { createCardForDeckController } from "./controllers/createCardForDeckController";
-import { deleteCardOnDeckController } from "./controllers/deleteCardOnDeckController";
 
-const PORT = 5000;
+import postMangaPageController from "./controllers/postMangaPageController";
+
+const PORT = process.env.PORT || 5000;
+const MongoUrlLink = process.env.MONGO_URL;
 
 const app = express();
 
@@ -22,14 +19,11 @@ app.use(
 );
 app.use(express.json());
 
-app.get("/decks", getDecksController);
-app.post("/decks", createDeckController);
-app.delete("/decks/:deckId", deleteDeckController);
-app.get("/decks/:deckId", getDeckController);
-app.post("/decks/:deckId/cards", createCardForDeckController);
-app.delete("/decks/:deckId/cards/:index", deleteCardOnDeckController);
+app.use("/", postMangaPageController);
 
-mongoose.connect(process.env.MONGO_URL!).then(() => {
+
+mongoose.connect(MongoUrlLink!).then(() => {
+  console.log("Database connected successfully")
   console.log(`listening on port ${PORT}`);
   app.listen(PORT);
-});
+}).catch(err => console.log(err));
