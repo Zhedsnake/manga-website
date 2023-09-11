@@ -5,11 +5,7 @@ const Schema = mongoose.Schema;
 
 
 const ImageSchema = new Schema({
-  title: String,
-  size: Number,
-  type: String,
-  extension: String,
-  path: String,
+  
 });
 
 const MangaPageModel = mongoose.model("MangaPage", ImageSchema);

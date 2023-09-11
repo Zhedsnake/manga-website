@@ -1,8 +1,7 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
-// import multer-storage-cloudinary as cloudinaryStorage from 'multer-storage-cloudinary';
-
 import cloudinary from '../config/cloudinaryConfig';
+// import multer-storage-cloudinary as cloudinaryStorage from 'multer-storage-cloudinary';
 
 const router = express.Router();
 
@@ -10,30 +9,39 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
 // Маршрут для загрузки изображений
-router.post('/upload', upload.single('image'), (req: Request, res: Response) => {
-  console.log(req.file) // to see what is returned to you
-  if (!req.file) {
-    return res.status(400).json({ message: 'No file uploaded' });
-  }
+router.post('/upload', upload.single('image'), async (req: Request, res: Response) => {
+  // console.log(req.file) // to see what is returned to you
+  
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
 
-  const filePath = req.file.path;
+    const filePath = req.file.path;
 
-  // Загрузка файла на Cloudinary
-  cloudinary.uploader.upload(filePath, (result) => {
+    // Загрузка файла на Cloudinary
+    const result = await cloudinary.uploader.upload(filePath);
+
     // Удаление временного файла после загрузки на Cloudinary
     const fs = require('fs');
     fs.unlinkSync(filePath);
 
-    if (result && result.secure_url) {
-      res.status(200).json({ imageUrl: result.secure_url });
+    // if (result && result.secure_url) {
+    if (result) {
+      res.status(200).json({
+        // imageUrl: result.secure_url,
+        message: 'Image uploaded successfully.'
+      });
     } else {
       res.status(500).json({ message: 'Image upload failed' });
     }
-  });
-  res.status(200).json({ message: 'Image uploaded successfully.' });
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    res.status(500).json({ message: 'Image upload failed' });
+  }
 });
 
-
+export default router;
 
 
 // const storage = cloudinaryStorage({
@@ -52,8 +60,3 @@ router.post('/upload', upload.single('image'), (req: Request, res: Response) => 
 //     .then(newImage => res.json(newImage))
 //     .catch(err => console.log(err));
 // });
-
-
-
-
-export default router;

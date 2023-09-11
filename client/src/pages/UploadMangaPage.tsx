@@ -37,7 +37,8 @@ export default function UploadMangaPage() {
           .then((response) => {
             if (response.status === 200) {
               const data = response.data;
-              console.log('Uploaded image URL:', data.imageUrl);
+              // console.log('Uploaded image URL:', data.imageUrl);
+              console.log( data);
               // Можете сохранить этот URL в состоянии компонента или отправить куда-либо еще.
             } else {
               console.error('Error uploading image:', error);
