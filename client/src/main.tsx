@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import "./css_files/index.css";
 
 import App from "./pages/App";
-import UploadMangaPage from "./pages/UploadMangaPage";
+import UploadMangaPage from "./pages/UploadManga";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/UploadMangaPage",
+    path: "/UploadManga",
     element: <UploadMangaPage />,
   },
 ]);
