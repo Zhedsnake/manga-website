@@ -4,9 +4,12 @@ config();
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import multer from 'multer';
 
-import postMangaPageController from "./controllers/postMangaPageController";
+// Controllers
+import uploadNewMangaController from "./controllers/uploadNewMangaController";
 
+// Импорты .env
 const PORT = process.env.PORT || 5000;
 const MongoUrlLink = process.env.MONGO_URL;
 
@@ -17,9 +20,15 @@ app.use(
     origin: "*",
   })
 );
+
 app.use(express.json());
 
-app.use("/", postMangaPageController);
+// Мидлвэр multer для загрузки файлов
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+
+app.post("/uploadNewMangaData", upload.single(`preview`), uploadNewMangaController);
 
 
 mongoose.connect(MongoUrlLink!).then(() => {

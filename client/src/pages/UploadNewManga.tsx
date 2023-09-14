@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { usePromiseTracker, trackPromise } from 'react-promise-tracker';
 
-import '../css_files/UploadManga.css';
+import '../css_files/UploadNewManga.css';
 
 import { API_URL } from '../api/config';
 
-// Интерфейсы ts
-import { MangaImages } from '../api/Interfaces and types/UploadManga';
 
-
-function UploadManga() {
+function uploadManga() {
 
   
   // Состояния вводимых данных
@@ -21,7 +18,7 @@ function UploadManga() {
   const [tags, setTags] = useState('');
   const [translators, setTranslators] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState<FileList | undefined>(undefined);
+  const [selectedPreview, setSelectedPreview] = useState<File | undefined>(undefined);
 
 
   // Скрытие placeholder при фокусе
@@ -33,7 +30,7 @@ function UploadManga() {
   const [isDescriptionInputFocused, setIsDescriptionInputFocused] = useState(false);
 
   
-  // Стату загрузки данных
+  // Статус загрузки данных
   const [isLoading, setIsLoading] = useState(false);
 
 
@@ -45,83 +42,27 @@ function UploadManga() {
   // const { promiseInProgress } = usePromiseTracker();
 
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePreviewChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
-      setSelectedFiles(e.target.files);
+      setSelectedPreview(e.target.files[0]); // Выбираем только первый файл
     }
   }
-
-
-  // Структура данных для хранения изображений
-  const mangaImages: MangaImages = {};
-
-  
-  function extractAndSortImages(files: FileList) {
-    
-    // Пройдитесь по всем выбранным файлам
-    for (let i = 0; i < files.length; i++) {
-      const fileName = files[i].name;
-      // Используем регулярное выражение для извлечения vol, ch и p из названия файла
-      const match = fileName.match(/vol(\d+)_ch(\d+)_p(\d+)\.jpg/i);
-      if (match) {
-        const [_, vol, ch, p] = match;
-        if (!mangaImages[vol]) {
-          mangaImages[vol] = {};
-        }
-        if (!mangaImages[vol][ch]) {
-          mangaImages[vol][ch] = {};
-        }
-        if (!mangaImages[vol][ch][p]) {
-          mangaImages[vol][ch][p] = [];
-        }
-        mangaImages[vol][ch][p].push({ fileName, vol, ch, p });
-      }
-    }
-    
-    // Сортировка изображений в каждом массиве
-    for (const vol in mangaImages) {
-      for (const ch in mangaImages[vol]) {
-        for (const p in mangaImages[vol][ch]) {
-          mangaImages[vol][ch][p].sort((a, b) => a.fileName.localeCompare(b.fileName));
-        }
-      }
-    }
-  
-    return mangaImages;
-  }
-  
 
   // Функция для загрузки данных на сервер
   async function handleUpload() {
 
 
-    // Проверка, есть ли файлы в selectedFiles
-    if (!selectedFiles || selectedFiles.length === 0) {
+    // Проверка, есть ли файл в selectedPreview
+    if (!selectedPreview) {
       return;
     }
-
-    
-    // Извлечение и сортированных изображений
-    const sortedImages: MangaImages = extractAndSortImages(selectedFiles);
-    // Вывод отсортированных изображений в консоль
-
-    // Выводим всю форму в консоль в виде JSON
-    console.log('Form Data:', JSON.stringify({
-      mangaTitle,
-      otherTitles,
-      type,
-      authors,
-      tags,
-      translators,
-      description,
-      selectedFiles: Array.from(selectedFiles).map(file => file.name),
-    }, null, 2));
 
 
     setIsLoading(true); // Устанавливаем состояние isLoading в true перед началом загрузки
     setError(null); // Сбрасываем состояние ошибки
 
     try {
+      // Создание формы и введение в неё данных из импутов
       const formData = new FormData();
       formData.append('mangaTitle', mangaTitle);
       formData.append('otherTitles', otherTitles);
@@ -130,35 +71,16 @@ function UploadManga() {
       formData.append('tags', tags);
       formData.append('translators', translators);
       formData.append('description', description);
-      
-      // Добавьте отсортированные изображения в FormData
-      for (const vol in sortedImages) {
-        for (const ch in sortedImages[vol]) {
-          for (const p in sortedImages[vol][ch]) {
-            sortedImages[vol][ch][p].forEach((image, i) => {
-              const file = new File([], image.fileName, { type: 'image/jpeg' });
-              formData.append(`images[${i}]`, file);
-            });
-          }
-        }
+      formData.append(`preview`, selectedPreview);
+
+      // Вывод содержания FormData в консоль
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
       }
 
-      // Выводим всю форму в консоль в виде JSON
-      console.log('Form Data:', JSON.stringify({
-        mangaTitle,
-        otherTitles,
-        type,
-        authors,
-        tags,
-        translators,
-        description,
-        selectedFiles: Array.from(selectedFiles).map(file => file.name),
-      }, null, 2));
-      console.log('Sorted Images:', JSON.stringify(sortedImages, null, 2));
-
-      // Отправьте FormData на сервер
+      // Отправка FormData на сервер
       await trackPromise(
-        axios.post(`${API_URL}/upload`, formData, {
+        axios.post(`${API_URL}/uploadNewMangaData`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -238,7 +160,7 @@ function UploadManga() {
       </div>
 
       <div>
-        <input type="file" accept="image/jpeg, image/jpg" onChange={handleFileChange} multiple />
+        <input type="file" accept="image/jpg" onChange={handlePreviewChange} />
       </div>
 
       <button onClick={handleUpload} disabled={isLoading}>
@@ -248,4 +170,4 @@ function UploadManga() {
   );
 }
 
-export default UploadManga;
+export default uploadManga;
