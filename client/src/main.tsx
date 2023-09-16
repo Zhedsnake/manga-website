@@ -7,6 +7,13 @@ import "./index.css";
 import App from "./components/App";
 import UploadNewManga from "./components/UploadNewManga";
 
+
+// Компонент провайдера аутентификации
+import { AuthProvider } from './contexts/FirebaseAuthContext';
+// Guards
+import GuestGuard from './guards/GuestGuard';
+import UserGuard from './guards/UserGuard';
+
 const router = createBrowserRouter([
   {
     path: "/",

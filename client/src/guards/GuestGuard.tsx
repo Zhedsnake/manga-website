@@ -8,6 +8,9 @@ type GuestGuardProps = {
   children: React.ReactNode;
 };
 
+
+// Принимает `children` в качестве аргумента и проверяет аутентификацию пользователя.
+// Если пользователь не аутентифицирован, перенаправляет на страницу '/login', иначе отображает дочерние компоненты.
 const GuestGuard: React.FC<GuestGuardProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
 

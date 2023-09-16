@@ -1,19 +1,20 @@
 import { useContext } from 'react';
 import AuthContext from '../contexts/FirebaseAuthContext';
 
-// Определение типа для состояния аутентификации
-type AuthContextState = {
+
+// Определение начального состояния
+interface AuthState {
   isAuthenticated: boolean;
-};
+  user: null | { [key: string]: any };
+}
 
-// Создаем пользовательский хук useAuth, который возвращает данные из контекста аутентификации.
-const useAuth = function(): AuthContextState {
-    const authContext = useContext(AuthContext);
+// Определяем пользовательский хук useAuth
+const useAuth = function(): AuthState {
+  // Используем хук useContext для получения данных из контекста AuthContext
+  const { state } = useContext(AuthContext);
 
-    return {
-      isAuthenticated: authContext.isAuthenticated,
-      // Другие свойства, если есть
-    };
+  // Возвращаем только состояние аутентификации
+  return state;
 };
 
 export default useAuth;

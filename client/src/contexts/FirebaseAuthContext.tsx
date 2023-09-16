@@ -6,7 +6,7 @@ import axios from 'axios';
 // Определение начального состояния
 interface AuthState {
   isAuthenticated: boolean;
-  user: null | { [key: string]: any }; // Здесь можно указать более точный тип
+  user: null | { [key: string]: any };
 }
 
 // Определение действий (actions) для редуктора
