@@ -59,7 +59,7 @@ export function Header() {
       <div className="container">
         {state.isAuthenticated ? (
           <div>
-            <p>Welcome, {state.user && state.user.username}</p>
+            <p>Welcome, {state.user && state.user.login}</p>
             <button onClick={handleLogout}>Logout</button>
           </div>
         ) : isLogin ? (
