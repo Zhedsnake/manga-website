@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { usePromiseTracker, trackPromise } from 'react-promise-tracker';
 
-import '../css_files/UploadNewManga.css';
+import './css/UploadNewManga.css';
 
-import { API_URL } from '../api/config';
+import { API_URL } from './api/config';
 
 
 function uploadManga() {

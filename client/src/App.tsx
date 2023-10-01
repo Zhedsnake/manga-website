@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../css_files/App.css";
+import "./css/App.css";
 
 function App() {
   

@@ -4,8 +4,10 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 
 import "./index.css";
 
-import App from "./components/App";
-import UploadNewManga from "./components/UploadNewManga";
+// Pages
+import App from "./App";
+import UploadNewManga from "./UploadNewManga";
+import { Header } from "./Header";
 
 
 // Компонент провайдера аутентификации
@@ -17,11 +19,20 @@ import UserGuard from './guards/UserGuard';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    ),
   },
   {
     path: "/upload-new-manga",
-    element: <UploadNewManga />,
+    element: (
+      <AuthProvider>
+        <Header />
+        <UploadNewManga />
+      </AuthProvider>
+    ),
   },
 ]);
 

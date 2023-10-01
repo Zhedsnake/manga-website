@@ -11,6 +11,7 @@ interface DecodedToken {
   user: { id: string }; // Замените на фактическую структуру вашего декодированного токена
 }
 
+
 // Экспортируем middleware как функцию, принимающую три аргумента:
 export default function authMiddleware(req: CustomRequest, res: Response, next: NextFunction) {
   // Получаем токен из заголовка запроса

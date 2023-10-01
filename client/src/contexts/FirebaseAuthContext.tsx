@@ -2,6 +2,8 @@ import { createContext, useEffect, useReducer, ReactNode } from 'react';
 import axios from 'axios';
 
 
+import { API_URL } from '../api/config';
+
 
 // Определение начального состояния
 interface AuthState {
@@ -75,7 +77,7 @@ export const AuthProvider: React.FC<AuthContextProps> = function({ children }) {
       try {
         // Установка заголовка перед запросом
         axios.defaults.headers.common['x-auth-token'] = token;
-        const res = await axios.get(`/api/user/info`);
+        const res = await axios.get(`${API_URL}/user/info`);
 
         dispatch({
           type: 'LOGIN',
@@ -106,7 +108,7 @@ export const AuthProvider: React.FC<AuthContextProps> = function({ children }) {
     const body = JSON.stringify({ login, password });
 
     try {
-      const res = await axios.post(`/api/user/login`, body, config);
+      const res = await axios.post(`${API_URL}/user/login`, body, config);
       localStorage.setItem('token', res.data.token);
       await getUserInfo();
     } catch (err) {
@@ -116,13 +118,14 @@ export const AuthProvider: React.FC<AuthContextProps> = function({ children }) {
 
   // Функция для регистрации
   const register = async function(login: string, password: string) {
+    
     const config = {
       headers: { 'Content-Type': 'application/json' },
     };
     const body = JSON.stringify({ login, password });
-
+    
     try {
-      const res = await axios.post(`/api/user/register`, body, config);
+      const res = await axios.post(`${API_URL}/user/register`, body, config);
       localStorage.setItem('token', res.data.token);
       await getUserInfo();
     } catch (err) {
