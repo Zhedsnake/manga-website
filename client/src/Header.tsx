@@ -4,7 +4,7 @@ import "./css/Header.css";
 
 
 export function Header() {
-  const { state, logIn, register, logOut } = useAuth();
+  const { state, logIn, register, logOut, message } = useAuth();
 
   const [loginData, setLoginData] = useState({ login: "", password: "" });
   const [registerData, setRegisterData] = useState({ login: "", password: "" });
@@ -66,28 +66,6 @@ export function Header() {
           <div>
             <input
               type="text"
-              placeholder={isLoginInputFocused ? "" : "Login"}
-              value={loginData.login}
-              onChange={(e) => setLoginData({ ...loginData, login: e.target.value })}
-              
-              onFocus={() => setIsLoginInputFocused(true)}
-              onBlur={() => setIsLoginInputFocused(false)}
-            />
-            <input
-              type="password"
-              placeholder={isPasswordInputFocused ? "" : "Password"}
-              value={loginData.password}
-              onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-
-              onFocus={() => setIsPasswordInputFocused(true)}
-              onBlur={() => setIsPasswordInputFocused(false)}
-            />
-            <button onClick={handleLogin}>Login</button>
-          </div>
-        ) : (
-          <div>
-            <input
-              type="text"
               placeholder={isLoginInputFocused ? "" : "Register Login"}
               value={registerData.login}
               onChange={(e) => setRegisterData({ ...registerData, login: e.target.value })}
@@ -106,11 +84,36 @@ export function Header() {
             />
             <button onClick={handleRegister}>Register</button>
           </div>
+        ) : (
+          <div>
+            <input
+              type="text"
+              placeholder={isLoginInputFocused ? "" : "Login"}
+              value={loginData.login}
+              onChange={(e) => setLoginData({ ...loginData, login: e.target.value })}
+              
+              onFocus={() => setIsLoginInputFocused(true)}
+              onBlur={() => setIsLoginInputFocused(false)}
+            />
+            <input
+              type="password"
+              placeholder={isPasswordInputFocused ? "" : "Password"}
+              value={loginData.password}
+              onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+
+              onFocus={() => setIsPasswordInputFocused(true)}
+              onBlur={() => setIsPasswordInputFocused(false)}
+            />
+            <button onClick={handleLogin}>Login</button>
+          </div>
         )}
+        
+        {/* Вывод сообщения */}
+        {message && <p className="message">{message}</p>}
 
         {!state.isAuthenticated && (
           <button onClick={toggleForm}>
-            {isLogin ? "Switch to Register" : "Switch to Login"}
+            {isLogin ? "Switch to Login" : "Switch to Register"}
           </button>
         )}
       </div>

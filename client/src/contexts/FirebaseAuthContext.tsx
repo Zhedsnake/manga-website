@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, ReactNode } from 'react';
+import { useState, createContext, useEffect, useReducer, ReactNode } from 'react';
 import axios from 'axios';
 
 
@@ -9,6 +9,7 @@ import { API_URL } from '../api/config';
 interface AuthState {
   isAuthenticated: boolean;
   user: null | { [key: string]: any };
+  message: string;
 }
 
 // Определение действий (actions) для редуктора
@@ -28,6 +29,7 @@ interface AuthContextProps {
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
+  message: '',
 };
 
 // Редуктор
@@ -56,11 +58,13 @@ export const AuthContext = createContext<{
   logIn: (login: string, password: string) => Promise<void>;
   register: (login: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
+  message: string;
 }>({
   state: initialState,
   logIn: async () => {},
   register: async () => {},
   logOut: async () => {},
+  message: '',
 });
 
 
@@ -68,6 +72,7 @@ export const AuthContext = createContext<{
 export const AuthProvider: React.FC<AuthContextProps> = function({ children }) {
   // Инициализация редуктора
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const [message, setMessage] = useState<string>(''); // Состояние для сообщения
 
   // Функция для получения информации о пользователе
   const getUserInfo = async function() {
@@ -111,6 +116,7 @@ export const AuthProvider: React.FC<AuthContextProps> = function({ children }) {
       const res = await axios.post(`${API_URL}/user/login`, body, config);
       localStorage.setItem('token', res.data.token);
       await getUserInfo();
+      setMessage(res.data.message);
     } catch (err) {
       console.error(err);
     }
@@ -128,6 +134,7 @@ export const AuthProvider: React.FC<AuthContextProps> = function({ children }) {
       const res = await axios.post(`${API_URL}/user/register`, body, config);
       localStorage.setItem('token', res.data.token);
       await getUserInfo();
+      setMessage(res.data.message);
     } catch (err) {
       console.error(err);
     }
@@ -146,7 +153,7 @@ export const AuthProvider: React.FC<AuthContextProps> = function({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ state, logIn, register, logOut }}>
+    <AuthContext.Provider value={{ state, logIn, register, logOut, message }}>
       {children}
     </AuthContext.Provider>
   );

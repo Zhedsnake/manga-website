@@ -21,6 +21,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <AuthProvider>
+        <Header />
         <App />
       </AuthProvider>
     ),
