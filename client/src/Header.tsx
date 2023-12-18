@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import useAuth from "./hooks/useAuth";
+
 import "./css/Header.css";
 
+import LoginForm from './components/header/LoginForm';
+import RegisterForm from './components/header/RegisterForm';
+import WelcomeBlock from './components/header/WelcomeBlock';
 
-export function Header() {
+function Header() {
   const { state, logIn, register, logOut, message } = useAuth();
 
-  const [loginData, setLoginData] = useState({ login: "", password: "" });
-  const [registerData, setRegisterData] = useState({ login: "", password: "" });
   const [isLogin, setIsLogin] = useState(true);
-
+  
   // Состояния для отслеживания фокуса на инпутах
   const [isLoginInputFocused, setIsLoginInputFocused] = useState(false);
   const [isPasswordInputFocused, setIsPasswordInputFocused] = useState(false);
 
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-  };
+  // Состояние для поискового запроса  
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     // Проверяем, зарегистрирован ли пользователь
@@ -24,8 +25,7 @@ export function Header() {
       setIsLogin(false);
     }
   }, [state.isAuthenticated]);
-
-  const handleLogin = async () => {
+  const handleLogin = async (loginData: { login: string, password: string }) => {
     try {
       await logIn(loginData.login, loginData.password);
       // Успешный вход, скрываем форму
@@ -35,8 +35,7 @@ export function Header() {
     }
   };
 
-  const handleRegister = async () => {
-
+  const handleRegister = async (registerData: { login: string, password: string }) => {
     try {
       await register(registerData.login, registerData.password);
       // Успешная регистрация, скрываем форму
@@ -54,69 +53,73 @@ export function Header() {
     }
   };
 
+  const handleSearch = () => {
+    // Добавьте логику обработки поискового запроса здесь
+    console.log("Search query:", searchQuery);
+    // Очистите инпут после выполнения поиска, если это необходимо
+    setSearchQuery("");
+  };
+
   return (
-    <div className="header">
-      <div className="container">
-        {state.isAuthenticated ? (
-          <div>
-            <p>Welcome, {state.user && state.user.login}</p>
-            <button onClick={handleLogout}>Logout</button>
+    <header className="header">
+        <div className="header__user-operation">
+          {state.isAuthenticated ? (
+            <WelcomeBlock 
+              user={state.user && state.user.login} 
+              handleLogout={handleLogout} 
+            />
+          ) : isLogin ? (
+            <LoginForm
+              handleLogin={handleLogin}
+              isLoginInputFocused={isLoginInputFocused}
+              setIsLoginInputFocused={setIsLoginInputFocused}
+              isPasswordInputFocused={isPasswordInputFocused}
+              setIsPasswordInputFocused={setIsPasswordInputFocused}
+              maxLength={14}
+            />
+          ) : (
+            <RegisterForm
+              handleRegister={handleRegister}
+              isLoginInputFocused={isLoginInputFocused}
+              setIsLoginInputFocused={setIsLoginInputFocused}
+              isPasswordInputFocused={isPasswordInputFocused}
+              setIsPasswordInputFocused={setIsPasswordInputFocused}
+              maxLength={14}
+            />
+          )}
+
+          <div className="home-line"></div>
+
+          {/* Вывод сообщения */}
+          {message && <p className="message">{message}</p>}
+
+          {!state.isAuthenticated && (
+            <button 
+              onClick={() => setIsLogin(!isLogin)}
+              type="button" className="header__switch-button">
+              {isLogin ? "Switch to Register" : "Switch to Login"}
+            </button>
+          )}
+        </div>
+        <div className="header__search-bar">
+          <div className="header__wave">
+            <div className="header__hide-wave"></div>
           </div>
-        ) : isLogin ? (
-          <div>
-            <input
-              type="text"
-              placeholder={isLoginInputFocused ? "" : "Register Login"}
-              value={registerData.login}
-              onChange={(e) => setRegisterData({ ...registerData, login: e.target.value })}
-
-              onFocus={() => setIsLoginInputFocused(true)}
-              onBlur={() => setIsLoginInputFocused(false)}
-            />
-            <input
-              type="password"
-              placeholder={isPasswordInputFocused ? "" : "Register Password"}
-              value={registerData.password}
-              onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-
-              onFocus={() => setIsPasswordInputFocused(true)}
-              onBlur={() => setIsPasswordInputFocused(false)}
-            />
-            <button onClick={handleRegister}>Register</button>
-          </div>
-        ) : (
-          <div>
-            <input
-              type="text"
-              placeholder={isLoginInputFocused ? "" : "Login"}
-              value={loginData.login}
-              onChange={(e) => setLoginData({ ...loginData, login: e.target.value })}
-              
-              onFocus={() => setIsLoginInputFocused(true)}
-              onBlur={() => setIsLoginInputFocused(false)}
-            />
-            <input
-              type="password"
-              placeholder={isPasswordInputFocused ? "" : "Password"}
-              value={loginData.password}
-              onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-
-              onFocus={() => setIsPasswordInputFocused(true)}
-              onBlur={() => setIsPasswordInputFocused(false)}
-            />
-            <button onClick={handleLogin}>Login</button>
-          </div>
-        )}
-        
-        {/* Вывод сообщения */}
-        {message && <p className="message">{message}</p>}
-
-        {!state.isAuthenticated && (
-          <button onClick={toggleForm}>
-            {isLogin ? "Switch to Login" : "Switch to Register"}
-          </button>
-        )}
-      </div>
-    </div>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="header__search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button 
+            type="button" 
+            className="header__search-button" 
+            onClick={handleSearch}
+            ></button>
+        </div>
+    </header>
   );
 }
+
+export default Header;

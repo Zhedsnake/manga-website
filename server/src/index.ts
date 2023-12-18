@@ -19,7 +19,7 @@ import uploadNewMangaController from "./controllers/uploadNewMangaController";
 
 
 // Импорты .env
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 
 const app = express();
 

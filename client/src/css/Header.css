@@ -1,13 +1,1 @@
-.Header {
-  height: 50px;
-  background: white;
-}
-
-.Header .container {
-  width: 800px;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  align-items: center;
-}
+.header{display:-webkit-box;display:-ms-flexbox;display:flex;height:38px;-webkit-box-align:center;-ms-flex-align:center;align-items:center;width:100%;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;background-color:#fff;border-top-left-radius:10px;border-top-right-radius:10px;padding-left:5px;padding-right:5px;border-bottom:2px solid #09c}.header__user-operation{display:-webkit-box;display:-ms-flexbox;display:flex;width:100%;max-width:530px;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.header__login-form{display:-webkit-box;display:-ms-flexbox;display:flex;width:100%;max-width:380px;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.header__input{border-style:solid;border-width:1.6px;border-radius:4px;width:152px;padding: 0 2px}.header__auth-button{background-color:#e4e7ee;border-radius:0;border-style:none;border-color:#fff}.home-line{width:.5px;background-color:#000;margin-left:5px;margin-right:5px;}.header__search-bar{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-item-align:end;align-self:flex-end;border-color:#09c;border-right-width:0;border-left-width:10px;border-top-width:5px;border-bottom-width:3px;border-top-left-radius:10px}.header__switch-button{border-color:#fff;border-width:0;background:0 0;font-weight:600}.header__wave{width:15px;height:15px;background-color:#09c;-ms-flex-item-align:end;align-self:flex-end}.header__hide-wave{background-color:#fff;width:15px;height:15px;border-bottom-right-radius:10px}.header__search-input{width:271px;height:28px;border-top-left-radius:10px;border-left:10px solid #09c;border-top:5px solid #09c;border-bottom:2px solid #09c;border-right-style:none;padding: 0 2px}.header__search-button{background-image:url(\Search-icon.svg);width:28px;height:28px;-ms-flex-item-align:end;align-self:flex-end;background-color:#09c;background-repeat:no-repeat;background-size:cover;border:2px solid #09c;border-top-right-radius:10px}.header__search-button-arrea{display:-webkit-box;display:-ms-flexbox;display:flex}.header__authorised-user-container{display:-webkit-box;display:-ms-flexbox;display:flex;margin-left:auto;margin-right:auto}.header__welcome{display:-webkit-box;display:-ms-flexbox;display:flex;margin-right:10px}

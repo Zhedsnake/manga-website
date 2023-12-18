@@ -1,0 +1,21 @@
+version: "3"
+services:
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/src:/app/client/src
+    container_name: manga-website-client
+    depends_on:
+      - server
+  server:
+    build: ./server
+    ports:
+      - "5000:6000"
+    volumes:
+      - ./server/src:/app/server/src
+    tty: true
+    container_name: manga-website-server
+
+# docker-compose up --build

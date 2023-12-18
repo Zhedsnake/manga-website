@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./css/App.css";
+import "./css/Homepage.css";
 
-function App() {
+function Homepage() {
   
   return (
     <div className="container">
@@ -11,4 +11,4 @@ function App() {
   );
 }
 
-export default App;
+export default Homepage;

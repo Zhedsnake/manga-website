@@ -2,12 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 
-import "./index.css";
+import "./css/index.css";
+import "./css/App.css";
+
+// Header
+import Header from "./Header";
 
 // Pages
-import App from "./App";
+import Homepage from "./Homepage";
 import UploadNewManga from "./UploadNewManga";
-import { Header } from "./Header";
 
 
 // Компонент провайдера аутентификации
@@ -21,8 +24,12 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <AuthProvider>
-        <Header />
-        <App />
+        <div className="app">
+          <div className="page">
+            <Header />
+            <Homepage />
+          </div>
+        </div>
       </AuthProvider>
     ),
   },
@@ -39,8 +46,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <div className="page">
-      <RouterProvider router={router} />
-    </div>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

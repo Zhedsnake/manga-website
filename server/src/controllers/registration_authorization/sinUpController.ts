@@ -21,7 +21,6 @@ async function sinUpController(req: Request, res: Response) {
     if (login.length < 4 || login.length > 14) {
       return res.json({ message: 'Username must be between 4 and 14 characters' });
     }
-
     if (password.length < 6 || password.length > 14) {
       return res.json({ message: 'Password must be between 6 and 14 characters' });
     }

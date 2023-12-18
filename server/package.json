@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/index.ts\""
+    "dev": "nodemon --watch src --ext ts,json --exec ts-node src/index.ts --legacy-watch"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +33,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.7",
     "nodemon": "^2.0.20",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3"
   }
 }
