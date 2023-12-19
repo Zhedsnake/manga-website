@@ -6,10 +6,10 @@ import "./css/index.css";
 import "./css/App.css";
 
 // Header
-import Header from "./Header";
+import Header from "./components/header/Header";
 
 // Pages
-import Homepage from "./Homepage";
+import Homepage from "./components/homepage/Homepage";
 import UploadNewManga from "./UploadNewManga";
 
 

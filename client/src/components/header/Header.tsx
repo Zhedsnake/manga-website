@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import useAuth from "./hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
-import "./css/Header.css";
+import "../../css/Header.css";
 
-import LoginForm from './components/header/LoginForm';
-import RegisterForm from './components/header/RegisterForm';
-import WelcomeBlock from './components/header/WelcomeBlock';
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
+import WelcomeBlock from './WelcomeBlock';
 
 function Header() {
   const { state, logIn, register, logOut, message } = useAuth();
