@@ -7,3 +7,5 @@
   },
   "include": ["vite.config.ts"]
 }
+
+// "module": "commonjs",

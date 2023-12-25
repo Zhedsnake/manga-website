@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 config();
 
-import express from "express";
+import express, { Application } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import multer from 'multer';
@@ -19,9 +19,9 @@ import uploadNewMangaController from "./controllers/uploadNewMangaController";
 
 
 // Импорты .env
-const PORT = process.env.PORT || 6000;
+const PORT: number = parseInt(process.env.PORT || "3000", 10);
 
-const app = express();
+const app: Application = express();
 
 app.use(
   cors({
@@ -45,8 +45,10 @@ app.get("/user/info", authMiddleware, userInfoController);
 app.post("/uploadNewMangaData", upload.single(`preview`), uploadNewMangaController);
 
 
-mongoose.connect(process.env.MONGO_URL!).then(() => {
+mongoose.connect(process.env.MONGO_URL!)
+.then(() => {
   console.log("Database connected successfully")
   console.log(`listening on port ${PORT}`);
   app.listen(PORT);
-}).catch(err => console.log(err));
+})
+.catch(err => console.log(err));
