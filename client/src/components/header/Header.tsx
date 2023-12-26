@@ -10,7 +10,8 @@ import WelcomeBlock from './WelcomeBlock';
 function Header() {
   const { state, logIn, register, logOut, message } = useAuth();
 
-  const [isLogin, setIsLogin] = useState(true);
+  // Состояние авторизован ли пользователь для переключения форм логина и регистрации
+  const [isLogin, setIsLogin] = useState(false);
   
   // Состояния для отслеживания фокуса на инпутах
   const [isLoginInputFocused, setIsLoginInputFocused] = useState(false);
@@ -22,14 +23,14 @@ function Header() {
   useEffect(() => {
     // Проверяем, зарегистрирован ли пользователь
     if (state.isAuthenticated) {
-      setIsLogin(false);
+      setIsLogin(true);
     }
   }, [state.isAuthenticated]);
+
   const handleLogin = async (loginData: { login: string, password: string }) => {
     try {
       await logIn(loginData.login, loginData.password);
-      // Успешный вход, скрываем форму
-      setIsLogin(false);
+      setIsLogin(true);
     } catch (error) {
       console.error(error);
     }
@@ -37,9 +38,9 @@ function Header() {
 
   const handleRegister = async (registerData: { login: string, password: string }) => {
     try {
+      console.log("Регистрация")
       await register(registerData.login, registerData.password);
-      // Успешная регистрация, скрываем форму
-      setIsLogin(false);
+      setIsLogin(true);
     } catch (error) {
       console.error(error);
     }
@@ -69,8 +70,8 @@ function Header() {
               handleLogout={handleLogout} 
             />
           ) : isLogin ? (
-            <LoginForm
-              handleLogin={handleLogin}
+            <RegisterForm
+              handleRegister={handleRegister}
               isLoginInputFocused={isLoginInputFocused}
               setIsLoginInputFocused={setIsLoginInputFocused}
               isPasswordInputFocused={isPasswordInputFocused}
@@ -78,8 +79,8 @@ function Header() {
               maxLength={14}
             />
           ) : (
-            <RegisterForm
-              handleRegister={handleRegister}
+            <LoginForm
+              handleLogin={handleLogin}
               isLoginInputFocused={isLoginInputFocused}
               setIsLoginInputFocused={setIsLoginInputFocused}
               isPasswordInputFocused={isPasswordInputFocused}
@@ -90,14 +91,14 @@ function Header() {
 
           <div className="home-line"></div>
 
-          {/* Вывод сообщения */}
+          {/* Получене сообщения ошибки */}
           {message && <p className="message">{message}</p>}
 
           {!state.isAuthenticated && (
             <button 
               onClick={() => setIsLogin(!isLogin)}
               type="button" className="header__switch-button">
-              {isLogin ? "Switch to Register" : "Switch to Login"}
+              {isLogin ? "Switch to Login" : "Switch to Register"}
             </button>
           )}
         </div>

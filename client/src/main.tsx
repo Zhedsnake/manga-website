@@ -10,7 +10,7 @@ import Header from "./components/header/Header";
 
 // Pages
 import Homepage from "./components/homepage/Homepage";
-import UploadNewManga from "./UploadNewManga";
+import UploadNewManga from "./components/UploadNewManga";
 
 
 // Компонент провайдера аутентификации

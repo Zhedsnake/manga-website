@@ -1,23 +1,23 @@
 import { useState, createContext, useEffect, useReducer, ReactNode } from 'react';
 import axios from 'axios';
 
-
+// Адрес сервера
 import { API_URL } from '../api/config';
 
 
-// Определение начального состояния
+// Определение типов данных пользователя 
 interface AuthState {
   isAuthenticated: boolean;
   user: null | { [key: string]: any };
   message: string;
 }
 
-// Определение действий (actions) для редуктора
+// Определение типов действий (actions) для редуктора
 type AuthAction =
   | { type: 'LOGIN'; payload: { user: { [key: string]: any } } }
   | { type: 'LOGOUT' };
   
-// Создание контекста аутентификации
+// Тип контекста аутентификации
 interface AuthContextProps {
   children: ReactNode;
 }
@@ -25,7 +25,7 @@ interface AuthContextProps {
 
 
 
-// Начальное состояние
+// Начальное состояние данных пользователя
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
@@ -52,7 +52,7 @@ const authReducer = function(state: AuthState, action: AuthAction): AuthState {
   }
 };
 
-
+// Контекст
 export const AuthContext = createContext<{
   state: AuthState;
   logIn: (login: string, password: string) => Promise<void>;

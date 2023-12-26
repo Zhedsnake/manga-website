@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { usePromiseTracker, trackPromise } from 'react-promise-tracker';
 
-import './css/UploadNewManga.css';
+import '../css/UploadNewManga.css';
 
-import { API_URL } from './api/config';
+// Адрес сервера
+import { API_URL } from '../api/config';
 
 
 function uploadManga() {
-
   
   // Состояния вводимых данных
   const [mangaTitle, setMangaTitle] = useState('');
@@ -20,7 +20,6 @@ function uploadManga() {
   const [description, setDescription] = useState('');
   const [selectedPreview, setSelectedPreview] = useState<File | undefined>(undefined);
 
-
   // Скрытие placeholder при фокусе
   const [isMangaTitleInputFocused, setIsMangaTitleInputFocused] = useState(false);
   const [isOtherTitlesInputFocused, setIsOtherTitlesInputFocused] = useState(false);
@@ -28,19 +27,15 @@ function uploadManga() {
   const [isAuthorInputFocused, setIsAuthorInputFocused] = useState(false);
   const [isTranslatorsInputFocused, setIsTranslatorsInputFocused] = useState(false);
   const [isDescriptionInputFocused, setIsDescriptionInputFocused] = useState(false);
-
   
   // Статус загрузки данных
   const [isLoading, setIsLoading] = useState(false);
 
-
   // Состояния ошибки
   const [error, setError] = useState(null) ;
-
   
   // TODO:Может быть понадобится
   // const { promiseInProgress } = usePromiseTracker();
-
 
   function handlePreviewChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
@@ -51,12 +46,10 @@ function uploadManga() {
   // Функция для загрузки данных на сервер
   async function handleUpload() {
 
-
     // Проверка, есть ли файл в selectedPreview
     if (!selectedPreview) {
       return;
     }
-
 
     setIsLoading(true); // Устанавливаем состояние isLoading в true перед началом загрузки
     setError(null); // Сбрасываем состояние ошибки
