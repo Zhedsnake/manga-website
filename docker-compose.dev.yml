@@ -6,7 +6,8 @@ services:
       - "3000:3000"
     volumes:
       - ./client/src:/app/client/src
-    container_name: manga-website-client
+    container_name: manga-website-client-dev
+    command: ["npm", "run", "dev"]
     depends_on:
       - server
   server:
@@ -16,6 +17,5 @@ services:
     volumes:
       - ./server/src:/app/server/src
     tty: true
-    container_name: manga-website-server
-
-# docker-compose up --build
+    container_name: manga-website-server-dev
+    command: ["npm", "run", "dev"]
